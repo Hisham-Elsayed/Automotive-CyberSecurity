@@ -1,0 +1,15 @@
+1- RX generate private key
+	openssl genrsa -out "$PATH" SIZE
+	ex: openssl genrsa -out "C:\Hisham\Automotive CyberSecurity\Repo\Lab3_Asymmetric_key_RSA\Rx\privatekey.bin" 2048
+	
+2- Generate public key from private key, send it to Tx
+	openssl rsa -in "$PRIVATE_KEY_PATH" -pubout -out "PUBLIC_KEY_PATH"
+	ex: openssl rsa -in "C:\Hisham\Automotive CyberSecurity\Repo\Lab3_Asymmetric_key_RSA\Rx\privatekey.bin" -pubout -out "C:\Hisham\Automotive CyberSecurity\Repo\Lab3_Asymmetric_key_RSA\Tx\publickey.bin"
+
+3= encrypt plain text using public key
+	openssl pkeyutl -encrypt -pubin -inkey "PUBLIC_KEY_PATH" -in "$PLAIN_TEXT_PATH" -out "$ENC_FILE_PATH"
+	ex: openssl pkeyutl -encrypt -pubin -inkey "C:\Hisham\Automotive CyberSecurity\Repo\Lab3_Asymmetric_key_RSA\Tx\publickey.bin" -in "C:\Hisham\Automotive CyberSecurity\Repo\Lab3_Asymmetric_key_RSA\Tx\plaintext.txt" -out "C:\Hisham\Automotive CyberSecurity\Repo\Lab3_Asymmetric_key_RSA\Rx\ciphertext.enc"
+	
+4- decrypt encrypted file using private key
+	openssl pkeyutl -decrypt -inkey "$PRIVATE_KEY_PATH" -in "$ENC_FILE_PATH" -out "$PLAIN_TEXT_PATH"
+	ex: openssl pkeyutl -decrypt -inkey "C:\Hisham\Automotive CyberSecurity\Repo\Lab3_Asymmetric_key_RSA\Rx\privatekey.bin" -in "C:\Hisham\Automotive CyberSecurity\Repo\Lab3_Asymmetric_key_RSA\Rx\ciphertext.enc" -out "C:\Hisham\Automotive CyberSecurity\Repo\Lab3_Asymmetric_key_RSA\Rx\plaintext.txt"
