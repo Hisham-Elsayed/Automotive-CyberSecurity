@@ -1,0 +1,47 @@
+DES Encryption / Decryption Steps
+
+1. Generate a random key file.
+
+   Command:
+   openssl rand -out key.bin 8
+
+   Parameter explanation:
+   - rand         : Generates cryptographically secure random bytes.
+   - -out         : Specifies the output file.
+   - key.bin      : File that stores the random bytes.
+   - 8            : Number of random bytes to generate (size in bytes).
+                    DES uses a 64-bit fixed (8-byte) key.
+
+2. Encrypt the plaintext.
+
+   Command:
+   openssl des-cbc -in plaintext.txt -out ciphertext.bin -pass file:key.bin
+
+   Parameter explanation:
+   - des-cbc      : Uses the DES algorithm in CBC (Cipher Block Chaining) mode.
+   - -in          : Specifies the input plaintext file.
+   - plaintext.txt: File to encrypt.
+   - -out         : Specifies the output encrypted file.
+   - ciphertext.bin : Encrypted output file.
+   - -pass        : Specifies the password source.
+   - file:key.bin : Reads the password from the file "key.bin". OpenSSL derives
+                    the DES encryption key (and IV, if needed) from this password.
+
+3. Decrypt the ciphertext.
+
+   Command:
+   openssl des-cbc -d -in ciphertext.bin -out decrypted.txt -pass file:key.bin
+
+   Parameter explanation:
+   - -d           : Performs decryption.
+   - The remaining parameters have the same meaning as in the encryption command.
+   - The same password file (key.bin) must be used to successfully decrypt the data.
+
+4. Verify the result.
+
+   Compare:
+   - plaintext.txt
+   - decrypted.txt
+
+   The files should be identical, confirming that the encryption and decryption
+   were successful.

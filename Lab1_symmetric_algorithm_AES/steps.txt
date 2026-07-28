@@ -1,0 +1,49 @@
+AES-128 Encryption / Decryption Steps
+
+1. Generate a 128-bit (16-byte) AES key.
+
+   Command:
+   openssl rand -out key.bin 16
+
+   Parameter explanation:
+   - rand        : Generates cryptographically secure random bytes.
+   - -out        : Specifies the output file.
+   - key.bin     : File that will store the generated AES key.
+   - 16          : Number of random bytes to generate.
+                   AES-128 requires a 128-bit key.
+                   Since 1 byte = 8 bits:
+                   16 bytes × 8 = 128 bits.
+
+2. Encrypt the plaintext.
+
+   Command:
+   openssl aes-128-cbc -in plaintext.txt -out ciphertext.bin -pass file:key.bin
+
+   Parameter explanation:
+   - aes-128-cbc  : Uses the AES algorithm with a 128-bit key in CBC mode.
+   - -in          : Specifies the input plaintext file.
+   - plaintext.txt: File to encrypt.
+   - -out         : Specifies the output encrypted file.
+   - ciphertext.bin : Encrypted output file.
+   - -pass        : Specifies the password source.
+   - file:key.bin : Reads the password from the file "key.bin". OpenSSL derives
+                    the encryption key (and IV, if needed) from this password.
+
+3. Decrypt the ciphertext.
+
+   Command:
+   openssl aes-128-cbc -d -in ciphertext.bin -out decrypted.txt -pass file:key.bin
+
+   Parameter explanation:
+   - -d           : Performs decryption.
+   - The remaining parameters have the same meaning as in the encryption command.
+   - The same password file (key.bin) must be used to successfully decrypt the data.
+
+4. Verify the result.
+
+   Compare:
+   - plaintext.txt
+   - decrypted.txt
+
+   The files should be identical, confirming that the encryption and decryption
+   were successful.
