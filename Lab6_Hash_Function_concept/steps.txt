@@ -1,0 +1,13 @@
+1- Change Msg to digest 
+	openssl dgst -md5 .\Msg.txt> $DIGEST_PATH
+or  
+	openssl dgst -sha1 .\Msg.txt> $DIGEST_PATH
+
+
+2- receiver inserts msg (from RX) in same hash function
+	openssl dgst -sha512 "C:\Hisham\Automotive CyberSecurity\Repo\Lab6_Hash_Function_concept\Rx\Msg.txt"> "C:\Hisham\Automotive CyberSecurity\Repo\Lab6_Hash_Function_concept\Rx\digest2.txt"
+PS C:\Users\hisha>
+
+3- Compare the 2 digests (If they are the same, data integrity is achieved)
+	digest1: SHA2-512(C:\Hisham\Automotive CyberSecurity\Repo\Lab6_Hash_Function_concept\Tx\Msg.txt)= 05d36fd46e9df1b513e233f7e8f99012d8820fb9716c4a5653c724b17f5aa9df4dda5b1d8ef6e6ac8d4d7c4479000c38845a13d08b3360018ee140a44391ec1b
+	digest2: SHA2-512(C:\Hisham\Automotive CyberSecurity\Repo\Lab6_Hash_Function_concept\Rx\Msg.txt)= 05d36fd46e9df1b513e233f7e8f99012d8820fb9716c4a5653c724b17f5aa9df4dda5b1d8ef6e6ac8d4d7c4479000c38845a13d08b3360018ee140a44391ec1b

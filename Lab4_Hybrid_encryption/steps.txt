@@ -1,0 +1,29 @@
+Hybrid encryption steps:
+
+1- Rx will generate private key and generate from it the public key (K1) to Tx.
+	openssl genrsa -out "C:\Hisham\Automotive CyberSecurity\Repo\Lab4_Hybrid_encryption\Rx\privatekey.bin" 2048
+	openssl rsa -in "C:\Hisham\Automotive CyberSecurity\Repo\Lab4_Hybrid_encryption\Rx\privatekey.bin" -pubout -out "C:\Hisham\Automotive CyberSecurity\Repo\Lab4_Hybrid_encryption\Tx\publickey.bin"
+
+
+2- Tx will generate another public key (K2).
+	openssl rand -out "C:\Hisham\Automotive CyberSecurity\Repo\Lab4_Hybrid_encryption\Tx\publickey2.bin" 16
+	
+	=> Note: 16 Bytes -> 128 bits
+
+3- Tx will encrypt (K2) using (K1) -> Asymmetric.
+	openssl pkeyutl -encrypt -pubin -inkey "C:\Hisham\Automotive CyberSecurity\Repo\Lab4_Hybrid_encryption\Tx\publickey.bin" -in "C:\Hisham\Automotive CyberSecurity\Repo\Lab4_Hybrid_encryption\Tx\publickey2.bin" -out "C:\Hisham\Automotive CyberSecurity\Repo\Lab4_Hybrid_encryption\Rx\publickey2.enc"
+
+
+4- and send it to Rx.
+
+
+5- Rx will decrypt public key using his private key.
+	openssl pkeyutl -decrypt -inkey "C:\Hisham\Automotive CyberSecurity\Repo\Lab4_Hybrid_encryption\Rx\privatekey.bin" -in "C:\Hisham\Automotive CyberSecurity\Repo\Lab4_Hybrid_encryption\Rx\publickey2.enc" -out "C:\Hisham\Automotive CyberSecurity\Repo\Lab4_Hybrid_encryption\Rx\decryptPublicKey2.bin"
+
+6- in this time Rx and Tx each one has symmetric key in this situation each side can exchange data in safe and with limited resourcs.
+
+7- Encrypt plain text using public key 2 -> Symmetric.
+	openssl aes-128-cbc -in "C:\Hisham\Automotive CyberSecurity\Repo\Lab4_Hybrid_encryption\Tx\plaintext.txt" -out "C:\Hisham\Automotive CyberSecurity\Repo\Lab4_Hybrid_encryption\Rx\plaintext.enc" -pass file:"C:\Hisham\Automotive CyberSecurity\Repo\Lab4_Hybrid_encryption\Tx\publickey2.bin"
+	
+8- 	Decrypt plain text -> Symmetric.
+	openssl enc -d -aes-128-cbc -in "C:\Hisham\Automotive CyberSecurity\Repo\Lab4_Hybrid_encryption\Rx\plaintext.enc" -out "C:\Hisham\Automotive CyberSecurity\Repo\Lab4_Hybrid_encryption\Rx\plaintext.txt" -pass file:"C:\Hisham\Automotive CyberSecurity\Repo\Lab4_Hybrid_encryption\Rx\decryptPublicKey2.bin"

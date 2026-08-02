@@ -1,0 +1,114 @@
+========================================
+Lab 8 – Digital Signature using RSA and ECC
+========================================
+
+Objective
+---------
+Demonstrate how to verify message integrity, authenticity, and non-repudiation using asymmetric cryptography (RSA or ECC) together with the SHA-512 hash function.
+
+--------------------------------------------------
+Step 1 – Generate the Message Digest
+--------------------------------------------------
+
+Generate the SHA-512 hash of the original message.
+
+Command:
+
+openssl dgst -sha512 "C:\Hisham\Automotive CyberSecurity\Repo\Lab8_Asymmetric_Hash_encryption_RSA_ECC\Tx\message.txt"
+
+Example Output:
+
+SHA2-512(...\message.txt)= a86fa520dac63ee1c91f5e2a12e6e7a8c00fa08634eb8f53733cd2d8c5008ef74bc4b87aab7e3db1de651f24bca5f8c57dcb1deb819fb9c8aba4591c5a9350e3
+
+To save the digest to a file:
+
+openssl dgst -sha512 "C:\Hisham\Automotive CyberSecurity\Repo\Lab8_Asymmetric_Hash_encryption_RSA_ECC\Tx\message.txt" > "C:\Hisham\Automotive CyberSecurity\Repo\Lab8_Asymmetric_Hash_encryption_RSA_ECC\Tx\digest.txt"
+
+Output:
+- digest.txt containing the SHA-512 digest.
+
+--------------------------------------------------
+Step 2 – Generate the RSA Key Pair
+--------------------------------------------------
+
+Generate a 2048-bit RSA private key.
+
+Command:
+
+openssl genrsa -out "C:\Hisham\Automotive CyberSecurity\Repo\Lab8_Asymmetric_Hash_encryption_RSA_ECC\Tx\privatekey.pem" 2048
+
+Output:
+- privatekey.pem
+
+Generate the corresponding RSA public key.
+
+Command:
+
+openssl rsa -in "C:\Hisham\Automotive CyberSecurity\Repo\Lab8_Asymmetric_Hash_encryption_RSA_ECC\Tx\privatekey.pem" -pubout -out "C:\Hisham\Automotive CyberSecurity\Repo\Lab8_Asymmetric_Hash_encryption_RSA_ECC\Rx\publickey.pem"
+
+Output:
+- publickey.pem
+
+--------------------------------------------------
+Step 3 – Generate the Digital Signature
+--------------------------------------------------
+
+Sign the original message using the RSA private key and the SHA-512 hash algorithm.
+
+Command:
+
+openssl dgst -sha512 -sign "C:\Hisham\Automotive CyberSecurity\Repo\Lab8_Asymmetric_Hash_encryption_RSA_ECC\Tx\privatekey.pem" -out "C:\Hisham\Automotive CyberSecurity\Repo\Lab8_Asymmetric_Hash_encryption_RSA_ECC\Rx\sig_value.rsa" "C:\Hisham\Automotive CyberSecurity\Repo\Lab8_Asymmetric_Hash_encryption_RSA_ECC\Tx\message.txt"
+
+Input:
+- Private key (privatekey.pem)
+- Original message (message.txt)
+
+Output:
+- sig_value.rsa (Digital Signature)
+
+--------------------------------------------------
+Step 4 – Verify the Digital Signature
+--------------------------------------------------
+
+Verify the received message using the sender's public key.
+
+Command:
+
+openssl dgst -sha512 -verify "C:\Hisham\Automotive CyberSecurity\Repo\Lab8_Asymmetric_Hash_encryption_RSA_ECC\Rx\publickey.pem" -signature "C:\Hisham\Automotive CyberSecurity\Repo\Lab8_Asymmetric_Hash_encryption_RSA_ECC\Rx\sig_value.rsa" "C:\Hisham\Automotive CyberSecurity\Repo\Lab8_Asymmetric_Hash_encryption_RSA_ECC\Rx\message.txt"
+
+Example Output:
+
+Verified OK
+
+If verification succeeds:
+- The message has not been modified (Integrity verified).
+- The sender is authenticated using the public key (Authenticity verified).
+- The sender cannot deny signing the message (Non-Repudiation verified).
+
+If verification fails:
+- The message was modified during transmission, or
+- The signature was generated using a different private key.
+
+--------------------------------------------------
+Summary
+--------------------------------------------------
+
+1. Generate the SHA-512 digest of the original message.
+2. Generate an RSA (or ECC) private/public key pair.
+3. Sign the message using the sender's private key.
+4. Verify the signature using the sender's public key.
+5. Successful verification confirms message integrity, authenticity, and non-repudiation.
+
+--------------------------------------------------
+Using ECC Instead of RSA
+--------------------------------------------------
+
+The same digital signature procedure applies when using Elliptic Curve Cryptography (ECC).
+
+The workflow remains the same:
+
+1. Generate an ECC private/public key pair.
+2. Sign the message using the ECC private key.
+3. Verify the signature using the ECC public key.
+
+The only difference is the asymmetric algorithm used to create the key pair and signature. ECC provides the same security objectives as RSA while using significantly smaller key sizes and offering improved computational efficiency.
