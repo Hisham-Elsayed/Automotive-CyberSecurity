@@ -27,6 +27,78 @@ Project File Date:  08/19/2026
 <h2>Output:</h2>
 *** Using Compiler 'V6.14.1', folder: 'C:\Keil_v5\ARM\ARMCLANG\Bin'
 Build target 'Target 1'
+CryIf/CryIf.c(1): warning: In file included from...
+./CryIf/CryIf.h(4): warning: In file included from...
+../Crypto Stack Project\Csm_Types.h(62): warning: no newline at end of file [-Wnewline-eof]
+#endif
+      ^
+CryIf/CryIf.c(1): warning: In file included from...
+./CryIf/CryIf.h(15): warning: no newline at end of file [-Wnewline-eof]
+#endif /* CRYIF_H */
+                    ^
+CryIf/CryIf.c(2): warning: In file included from...
+./Crypto Driver\Crypto.h(35): warning: no newline at end of file [-Wnewline-eof]
+#endif
+      ^
+CryIf/CryIf.c(41): warning: no newline at end of file [-Wnewline-eof]
+}
+ ^
+CryIf/CryIf.c(1): warning: In file included from...
+./CryIf/CryIf.h(4): warning: In file included from...
+../Crypto Stack Project\Csm_Types.h(50): warning: padding struct 'Crypto_JobType' with 1 byte to align 'inputPtr' [-Wpadded]
+    const uint8_t *inputPtr;
+                   ^
+5 warnings generated.
+compiling CryIf.c...
+CSM/Csm.c(1): warning: In file included from...
+./CSM/Csm.h(4): warning: In file included from...
+../Crypto Stack Project\Csm_Types.h(62): warning: no newline at end of file [-Wnewline-eof]
+#endif
+      ^
+CSM/Csm.c(1): warning: In file included from...
+./CSM/Csm.h(47): warning: no newline at end of file [-Wnewline-eof]
+#endif
+      ^
+CSM/Csm.c(2): warning: In file included from...
+./CryIf\CryIf.h(15): warning: no newline at end of file [-Wnewline-eof]
+#endif /* CRYIF_H */
+                    ^
+CSM/Csm.c(3): warning: In file included from...
+./Crypto Driver\Crypto.h(35): warning: no newline at end of file [-Wnewline-eof]
+#endif
+      ^
+CSM/Csm.c(1): warning: In file included from...
+./CSM/Csm.h(4): warning: In file included from...
+../Crypto Stack Project\Csm_Types.h(50): warning: padding struct 'Crypto_JobType' with 1 byte to align 'inputPtr' [-Wpadded]
+    const uint8_t *inputPtr;
+                   ^
+CSM/Csm.c(90): warning: no newline at end of file [-Wnewline-eof]
+}
+ ^
+6 warnings generated.
+compiling Csm.c...
+Crypto Driver/Crypto.c(1): warning: In file included from...
+./Crypto Driver/Crypto.h(4): warning: In file included from...
+../Crypto Stack Project\Csm_Types.h(62): warning: no newline at end of file [-Wnewline-eof]
+#endif
+      ^
+Crypto Driver/Crypto.c(1): warning: In file included from...
+./Crypto Driver/Crypto.h(35): warning: no newline at end of file [-Wnewline-eof]
+#endif
+      ^
+Crypto Driver/Crypto.c(134): warning: default label in switch which covers all enumeration values [-Wcovered-switch-default]
+        default:
+        ^
+Crypto Driver/Crypto.c(137): warning: no newline at end of file [-Wnewline-eof]
+}
+ ^
+Crypto Driver/Crypto.c(1): warning: In file included from...
+./Crypto Driver/Crypto.h(4): warning: In file included from...
+../Crypto Stack Project\Csm_Types.h(50): warning: padding struct 'Crypto_JobType' with 1 byte to align 'inputPtr' [-Wpadded]
+    const uint8_t *inputPtr;
+                   ^
+5 warnings generated.
+compiling Crypto.c...
 main.c(1): warning: In file included from...
 C:/Users/hisha/AppData/Local/Arm/Packs/Keil/TM4C_DFP/1.1.0/Device/Include/TM4C123\TM4C123GH6PM.h(298): warning: anonymous unions are a C11 extension [-Wc11-extensions]
   union {
@@ -162,21 +234,21 @@ C:/Users/hisha/AppData/Local/Arm/Packs/Keil/TM4C_DFP/1.1.0/Device/Include/TM4C12
   ^
 main.c(2): warning: In file included from...
 ./CSM\Csm.h(4): warning: In file included from...
-../Crypto Stack Project\Csm_Types.h(54): warning: no newline at end of file [-Wnewline-eof]
+../Crypto Stack Project\Csm_Types.h(62): warning: no newline at end of file [-Wnewline-eof]
 #endif
       ^
 main.c(2): warning: In file included from...
-./CSM\Csm.h(16): warning: no newline at end of file [-Wnewline-eof]
+./CSM\Csm.h(47): warning: no newline at end of file [-Wnewline-eof]
 #endif
       ^
-main.c(127): warning: no newline at end of file [-Wnewline-eof]
+main.c(145): warning: no newline at end of file [-Wnewline-eof]
 }
  ^
 47 warnings generated.
 compiling main.c...
 linking...
 Program Size: Code=7026 RO-data=9826 RW-data=0 ZI-data=648  
-".\Objects\Project.axf" - 0 Error(s), 47 Warning(s).
+".\Objects\Project.axf" - 0 Error(s), 63 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -202,10 +274,10 @@ Package Vendor: Keil
    * Component: ARM::CMSIS:CORE:6.1.1
 
    * Component: Keil::Device:Startup:1.0.1
-      Source file:   Device\Source\ARM\startup_TM4C123.s
-      Source file:   Device\Source\system_TM4C123.c
       Include file:  Device\Include\TM4C123\TM4C123.h
-Build Time Elapsed:  00:00:01
+      Source file:   Device\Source\system_TM4C123.c
+      Source file:   Device\Source\ARM\startup_TM4C123.s
+Build Time Elapsed:  00:00:02
 </pre>
 </body>
 </html>
