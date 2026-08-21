@@ -1,3 +1,7 @@
+/**
+ * @file Csm_Types.h
+ * @brief Common types used by the simplified AUTOSAR Crypto stack.
+ */
 #ifndef CSM_TYPES_H
 #define CSM_TYPES_H
 
@@ -5,33 +9,37 @@
 #include <stdint.h>
 #include <stddef.h>
 
-/* ---- Basic AUTOSAR-style typedefs -------------------------------- */
+/** @brief AUTOSAR-style service return type. */
 typedef uint8_t  Std_ReturnType;
-#define E_OK      0x00U
-#define E_NOT_OK  0x01U
+#define E_OK      0x00U /**< Successful operation. */
+#define E_NOT_OK  0x01U /**< Failed operation. */
 
-/* ---- Service / algorithm identification --------------------------- */
+/** @brief Cryptographic service requested by a job. */
 typedef enum
 {
     CRYPTO_HASH_GENERATE,
     CRYPTO_ENCRYPT
 } Crypto_ServiceType;
 
+/** @brief Cryptographic algorithm family selected by a job. */
 typedef enum
 {
     CRYPTO_ALGOFAM_SHA256,
     CRYPTO_ALGOFAM_AES
 } Crypto_AlgorithmFamilyType;
 
+/** @brief Cryptographic algorithm mode selected by a job. */
 typedef enum {
     CRYPTO_ALGOMODE_NOT_SET,
     CRYPTO_ALGOMODE_ECB
 } Crypto_AlgorithmModeType;
 
-/* ---- Job structure -------------------------------------------------
- * One job = one request travelling down through CSM -> CryIf -> Crypto
- * driver. */
-
+/**
+ * @brief Cryptographic request passed from CSM to the Crypto driver.
+ *
+ * One job represents one request travelling through CSM, CryIf, and the
+ * Crypto driver.
+ */
 typedef struct 
 {
     uint32_t                jobId;
@@ -48,7 +56,7 @@ typedef struct
 } Crypto_JobType;
 
 
-#define CRYIF_CHANNEL_ID_DEFAULT     0U
-#define CRYPTO_DRIVER_OBJECT_ID_SW   0U
+#define CRYIF_CHANNEL_ID_DEFAULT     0U /**< Default CryIf channel. */
+#define CRYPTO_DRIVER_OBJECT_ID_SW   0U /**< Software Crypto driver object. */
 
 #endif

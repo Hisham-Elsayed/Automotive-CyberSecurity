@@ -3,7 +3,12 @@
 #include <string.h>
 #include <stdio.h>
 
-/* ---- Minimal UART0 driver (PA0/PA1, 115200 8N1) --------------------*/
+/**
+ * @file main.c
+ * @brief UART-based validation application for the AUTOSAR Crypto stack.
+ */
+
+/* ---- UART0 configuration ------------------------------------------ */
 #define UART_CTL_UARTEN_BIT   (1U << 0)   /* UARTCTL bit 0: UART enable */
 #define UART_CTL_TXE_BIT      (1U << 8)   /* UARTCTL bit 8: transmit enable */
 #define UART_CTL_RXE_BIT      (1U << 9)   /* UARTCTL bit 9: receive enable */
@@ -13,6 +18,7 @@
 
 #define UART_FR_TXFF_BIT      (1U << 5)   /* UARTFR bit 5: transmit FIFO full */
 
+/** @brief Initializes UART0 on PA0 and PA1 at 115200 baud, 8N1. */
 static void uart0_init(void)
 {
     /* Enable clocks: GPIO port A, UART0 */
@@ -38,12 +44,14 @@ static void uart0_init(void)
     UART0->CTL  = UART_CTL_UARTEN_BIT | UART_CTL_TXE_BIT | UART_CTL_RXE_BIT;
 }
 
+/** @brief Sends one character through UART0. */
 static void uart0_putc(char c)
 {
     while (UART0->FR & UART_FR_TXFF_BIT) { /* wait while TX FIFO full */ }
     UART0->DR = (uint8_t)c;
 }
 
+/** @brief Sends a null-terminated string through UART0. */
 static void uart0_puts(const char *s)
 {
     while (*s) {
@@ -52,6 +60,7 @@ static void uart0_puts(const char *s)
     }
 }
 
+/** @brief Sends a byte buffer as uppercase hexadecimal through UART0. */
 static void uart0_print_hex_buf(const uint8_t *buf, uint32_t len)
 {
     static const char hexch[] = "0123456789ABCDEF";
@@ -61,6 +70,7 @@ static void uart0_print_hex_buf(const uint8_t *buf, uint32_t len)
     }
 }
 
+/* ---- Known-answer test vectors ----------------------------------- */
 static const uint8_t g_hashMsg[16] = {
     0x0A,0x27,0x84,0x7C, 0xDC,0x98,0xBD,0x6F,
     0x62,0x22,0x0B,0x04, 0x6E,0xDD,0x76,0x2B
@@ -70,8 +80,7 @@ static const uint8_t g_hashExpected[32] = {
     0x89,0x92,0x8E,0x39, 0xCA,0xB3,0xBC,0x25, 0xE4,0xD4,0xA4,0xC1, 0x39,0xBC,0xED,0xC4
 };
 
-/* FIPS-197 Appendix B AES-128-ECB known-answer test (verified correct -
- * see project notes on why the slide's own AES vector doesn't reproduce). */
+/** FIPS-197 Appendix B AES-128-ECB known-answer test vector. */
 static const uint8_t g_aesKey[16] = {
     0x2b,0x7e,0x15,0x16, 0x28,0xae,0xd2,0xa6, 0xab,0xf7,0x15,0x88, 0x09,0xcf,0x4f,0x3c
 };
@@ -83,6 +92,13 @@ static const uint8_t g_aesExpected[16] = {
 };
 
 
+/**
+ * @brief Runs the SHA-256 and AES-ECB known-answer tests.
+ *
+ * Results are printed over UART0 and execution then remains stopped.
+ *
+ * @return Does not return.
+ */
 int main(void)
 {
     uint8_t  hashResult[32];
@@ -96,7 +112,7 @@ int main(void)
     uart0_puts("\nTM4C123 AUTOSAR Crypto Stack Test\n");
     uart0_puts("----------------------------------\n\n");
 
-        /* ---- Csm_Hash ---- */
+    /* ---- CSM hash test -------------------------------------------- */
     uart0_puts("Csm_Hash SHA-256 test:\n");
     rc = Csm_Hash(g_hashMsg, sizeof(g_hashMsg), hashResult, &hashLen);
     uart0_puts("  Computed: ");
@@ -107,7 +123,9 @@ int main(void)
     uart0_puts((rc == E_OK && memcmp(hashResult, g_hashExpected, 32) == 0) ? "PASS" : "FAIL");
     uart0_puts("\n\n");
 
-		uart0_puts("Csm_Encrypt AES-ECB test:\n");
+
+        /* ---- CSM encryption test -------------------------------------- */
+        uart0_puts("Csm_Encrypt AES-ECB test:\n");
     rc = Csm_SetKey(g_aesKey, sizeof(g_aesKey));
     if (rc != E_OK || Csm_SetKeyValid(1U) != E_OK) {
         uart0_puts("AES key setup failed\n");
@@ -119,9 +137,9 @@ int main(void)
     uart0_puts("\n  Expected: ");
     uart0_print_hex_buf(g_aesExpected, sizeof(g_aesExpected));
     uart0_puts("\n  Result:   ");
-	  uart0_puts((rc == E_OK && memcmp(ctResult, g_aesExpected, 16) == 0) ? "PASS" : "FAIL");
-	  //uart0_puts("\n  rc was:   ");
-	  //uart0_puts(rc == E_OK ? "E_OK" : "E_NOT_OK");
-	  uart0_puts("\n");
+    uart0_puts((rc == E_OK && memcmp(ctResult, g_aesExpected, 16) == 0) ? "PASS" : "FAIL");
+    // uart0_puts("\n  rc was:   ");
+    // uart0_puts(rc == E_OK ? "E_OK" : "E_NOT_OK");
+    uart0_puts("\n");
     while (1) { /* done */ }
 }
